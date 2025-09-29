@@ -4,10 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- TODO: Personalize the title -->
     <title>Happy Birthday, Shivani!</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Montserrat:wght@300;400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
@@ -40,8 +38,8 @@
             font-family: var(--font-secondary);
             color: var(--font-color-dark);
             line-height: 1.6;
-            overflow: hidden;
-            /* Prevents scrollbars on the main page */
+            overflow-x: hidden;
+            /* Prevents horizontal scrollbars */
         }
         
         body {
@@ -435,7 +433,6 @@
         
         .scroll-down-btn {
             margin-top: 2.5rem;
-            /* Positions the button below the card */
             font-size: 1.1rem;
             padding: 15px 30px;
             background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
@@ -449,12 +446,28 @@
             box-shadow: 0 5px 25px rgba(255, 105, 180, 0.4);
             animation: pulse 2s infinite;
             overflow: hidden;
-            /* For ripple effect */
+            position: relative;
         }
         
         .scroll-down-btn:hover {
             transform: translateY(-8px) scale(1.05);
             box-shadow: 0 15px 40px rgba(0, 212, 255, 0.6);
+        }
+        
+        .scroll-down-btn .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: ripple 0.6s linear;
+        }
+        
+        .scroll-down-btn,
+        .scroll-down-btn:hover {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .scroll-down-btn:active {
+            transform: translateY(-5px);
         }
         /* ==========================================================================
                6. CONTENT STYLING (TEXT, HEADERS)
@@ -506,6 +519,10 @@
             max-width: fit-content;
             margin: 0 auto;
         }
+        
+        .message-text.typing {
+            animation: typewriter 4s steps(60) forwards;
+        }
         /* ==========================================================================
                7. GALLERY SECTION
                ========================================================================== */
@@ -518,7 +535,6 @@
             perspective: 1500px;
             position: relative;
             overflow: visible;
-            /* allow zoomed items to expand */
         }
         
         .gallery-item {
@@ -564,9 +580,8 @@
         }
         
         .gallery-item:hover {
-            transform: scale(2.5) rotateY(10deg) rotateX(5deg);
-            z-index: 20;
-            /* bring it above others */
+            transform: scale(1.1);
+            z-index: 2;
             box-shadow: 0 20px 50px rgba(255, 105, 180, 0.5);
         }
         
@@ -574,17 +589,31 @@
             transform: scale(1.1);
             filter: brightness(1.1) contrast(1.2) saturate(1.3);
         }
-        /* Gallery Click Effects */
+        /* Click zoom effect */
         
-        .photo-flip {
-            transform: rotateY(360deg) scale(1.1);
+        .gallery-item.zoomed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.7) !important;
+            z-index: 1000;
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.7);
+            transition: transform 0.4s ease, top 0.4s ease, left 0.4s ease;
         }
         
-        .photo-pulse img {
-            animation: energyPulse 0.6s ease-in-out 3;
+        .gallery-item.zoomed::before {
+            display: none;
         }
         
-        .sparkle-effect::after {
+        .photo-flip.zoomed {
+            transform: translate(-50%, -50%) rotateY(360deg) scale(2.5) !important;
+        }
+        
+        .photo-pulse.zoomed img {
+            animation: none;
+        }
+        
+        .photo-sparkle::after {
             content: "✨💖✨";
             position: absolute;
             top: 50%;
@@ -605,8 +634,8 @@
             animation: megaFlash 0.8s ease-out forwards;
         }
         
-        .photo-tilt-glimmer {
-            transform: rotate(15deg) scale(1.1);
+        .photo-tilt-glimmer.zoomed {
+            transform: translate(-50%, -50%) rotate(15deg) scale(2.5) !important;
         }
         
         .photo-tilt-glimmer::before {
@@ -635,54 +664,6 @@
             animation: romanticReveal 2s forwards;
             backdrop-filter: blur(10px);
         }
-        /* Make the glass-card a positioning context */
-        
-        .glass-card {
-            position: relative;
-            overflow: hidden;
-            /* ensures the enlarged card stays inside */
-        }
-        /* Gallery grid items */
-        
-        .gallery-item {
-            position: relative;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            overflow: hidden;
-            z-index: 1;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        /* Remove hover zoom effect (so zoom works only on click) */
-        /*
-.gallery-item:hover {
-    transform: scale(1.5);
-    z-index: 10;
-    box-shadow: 0 20px 50px rgba(255, 105, 180, 0.5);
-}
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-*/
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease, filter 0.4s ease;
-        }
-        /* Click zoom effect */
-        
-        .gallery-item.zoomed {
-            position: fixed !important;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(2.5) !important;
-            z-index: 1000;
-            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.7);
-            transition: transform 0.4s ease, top 0.4s ease, left 0.4s ease;
-        }
-        /* optional shadow */
         /* ==========================================================================
                8. CAKE SECTION
                ========================================================================== */
@@ -776,41 +757,33 @@
                 padding: 12px 24px;
                 font-size: 1rem;
                 margin-top: 2rem;
-                /* Adjusted margin for mobile */
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Background effect containers -->
     <div class="particles" id="particles"></div>
     <div class="floating-hearts" id="floating-hearts"></div>
     <div class="fireworks-container" id="fireworks-container"></div>
 
-    <!-- Main content container -->
     <div class="page-container">
-        <!-- Section 1: Hero -->
         <section id="hero" class="page-section active">
             <div class="glass-card">
-                <!-- TODO: Personalize the name -->
                 <h1>Happy Birthday, Shivani! 🎉❤️</h1>
                 <p>A magical celebration for the most wonderful person in my world ✨</p>
             </div>
-            <a href="#" class="scroll-down-btn" data-target="#message">Read Your Special Message 💌</a>
+            <button class="scroll-down-btn" data-target="#message">Read Your Special Message 💌</button>
         </section>
 
-        <!-- Section 2: Message -->
         <section id="message" class="page-section">
             <div class="glass-card">
                 <h2>My Dearest Love 💕</h2>
-                <!-- TODO: Personalize the message -->
                 <p class="message-text">Every day with you is a celebration, but today is extra special! ✨</p>
-                <a href="#" class="scroll-down-btn" data-target="#cake-page">Let's Celebrate You! 🎊</a>
+                <button class="scroll-down-btn" data-target="#cake-page">Let's Celebrate You! 🎊</button>
             </div>
         </section>
 
-        <!-- Section 3: Cake -->
         <section id="cake-page" class="page-section">
             <div class="glass-card">
                 <h2>Make a Wish! ✨</h2>
@@ -821,33 +794,29 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" class="scroll-down-btn" data-target="#gallery">See Our Beautiful Memories 📸</a>
+                <button class="scroll-down-btn" data-target="#gallery">See Our Beautiful Memories 📸</button>
             </div>
         </section>
 
-        <!-- Section 4: Gallery -->
         <section id="gallery" class="page-section">
             <div class="glass-card">
                 <h2>Our Precious Moments 💝</h2>
                 <div class="gallery-grid">
-                    <div class="gallery-item" data-effect="flip"><img src="Img/4.jpg" alt="Beautiful Memory 1"></div>
-                    <div class="gallery-item" data-effect="pulse"><img src="Img/14.jpg" alt="Beautiful Memory 2"></div>
-                    <div class="gallery-item" data-effect="sparkle"><img src="Img/1.jpg" alt="Beautiful Memory 3"></div>
-                    <div class="gallery-item" data-effect="flash"><img src="Img/13.jpg" alt="Beautiful Memory 4"></div>
-                    <div class="gallery-item" data-effect="tilt"><img src="Img/12.jpg" alt="Beautiful Memory 5"></div>
-                    <div class="gallery-item" data-effect="overlay"><img src="Img/7.jpg" alt="Beautiful Memory 6"></div>
-                    <div class="gallery-item" data-effect="overlay"><img src="Img/3.DNG" alt="Beautiful Memory 6"></div>
-                    <div class="gallery-item" data-effect="overlay"><img src="Img/5.jpg" alt="Beautiful Memory 6"></div>
-
+                    <div class="gallery-item" data-effect="flip"><img src="Img/4.jpg" alt="A beautiful memory of us smiling"></div>
+                    <div class="gallery-item" data-effect="pulse"><img src="Img/14.jpg" alt="Another candid photo of a happy moment"></div>
+                    <div class="gallery-item" data-effect="sparkle"><img src="Img/1.jpg" alt="A sweet selfie together"></div>
+                    <div class="gallery-item" data-effect="flash"><img src="Img/13.jpg" alt="A photo from our trip"></div>
+                    <div class="gallery-item" data-effect="tilt"><img src="Img/12.jpg" alt="A fun moment captured on camera"></div>
+                    <div class="gallery-item" data-effect="overlay"><img src="Img/7.jpg" alt="A romantic shot of us"></div>
+                    <div class="gallery-item" data-effect="overlay"><img src="Img/3.dng" alt="Us enjoying a special moment"></div>
+                    <div class="gallery-item" data-effect="overlay"><img src="Img/5.jpg" alt="Us enjoying a special moment"></div>
                 </div>
-                <a href="#" class="scroll-down-btn" data-target="#ending">One Final Surprise 🎁</a>
+                <button class="scroll-down-btn" data-target="#ending">One Final Surprise 🎁</button>
             </div>
         </section>
 
-        <!-- Section 5: Ending -->
         <section id="ending" class="page-section">
             <div class="glass-card">
-                <!-- TODO: Personalize your name -->
                 <h3>Forever Yours, [Your Name] 💕✨</h3>
                 <p style="font-size: 1.3rem; margin-top: 1rem; font-style: italic; color: var(--accent-gold);">
                     "You are my sunshine, my love, my everything. Happy Birthday, beautiful! 🌟"
@@ -860,37 +829,50 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- DOM Element Selection ---
             const pages = document.querySelectorAll('.page-section');
-            const navLinks = document.querySelectorAll('.scroll-down-btn');
+            const navButtons = document.querySelectorAll('.scroll-down-btn');
             const cakeContainer = document.getElementById('cake-container');
             const particlesContainer = document.getElementById('particles');
             const heartsContainer = document.getElementById('floating-hearts');
             const fireworksContainer = document.getElementById('fireworks-container');
+            const galleryGrid = document.querySelector('.gallery-grid');
+            const messageTextElement = document.querySelector('.message-text');
 
             let currentPageIndex = 0;
+            let currentMessagePage = document.getElementById('message');
 
             // --- Page Navigation Logic ---
             const updatePages = () => {
                 pages.forEach((page, index) => {
+                    page.classList.remove('active');
                     if (index === currentPageIndex) {
                         page.classList.add('active');
-                        // Trigger cake animation when its page becomes active
-                        if (page.id === 'cake-page' && !cakeContainer.classList.contains('show')) {
-                            setTimeout(() => cakeContainer.classList.add('show'), 500);
-                        }
-                        // Trigger fireworks on the final page
-                        if (page.id === 'ending') {
-                            setTimeout(triggerFireworks, 500);
-                        }
-                    } else {
-                        page.classList.remove('active');
                     }
                 });
+                // Trigger animations based on the current page
+                triggerPageSpecificEffects();
             };
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
+            const triggerPageSpecificEffects = () => {
+                const currentPage = pages[currentPageIndex];
+                if (currentPage.id === 'cake-page') {
+                    setTimeout(() => cakeContainer.classList.add('show'), 500);
+                }
+                if (currentPage.id === 'ending') {
+                    setTimeout(triggerFireworks, 500);
+                }
+                if (currentPage.id === 'message') {
+                    // Re-add the class to restart the animation
+                    messageTextElement.classList.remove('typing');
+                    setTimeout(() => {
+                        messageTextElement.classList.add('typing');
+                    }, 10);
+                }
+            };
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = link.getAttribute('data-target');
+                    const targetId = button.getAttribute('data-target');
                     const targetPage = document.querySelector(targetId);
                     if (targetPage) {
                         currentPageIndex = Array.from(pages).indexOf(targetPage);
@@ -912,7 +894,7 @@
             };
 
             const createFloatingHearts = () => {
-                const hearts = ['🎂', '🎊', '🍰', '🥳', '🎂', '🎈', '🎊'];
+                const hearts = ['🎂', '🎊', '🍰', '🥳', '🎈', '❤️', '💖', '✨'];
                 setInterval(() => {
                     const heart = document.createElement('div');
                     heart.className = 'floating-heart';
@@ -959,46 +941,33 @@
             };
 
             // --- Interactive Effects ---
-            // --- Gallery Click Zoom ---
-            document.querySelectorAll('.gallery-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    // If already zoomed, remove zoom
-                    if (item.classList.contains('zoomed')) {
-                        item.classList.remove('zoomed');
-                    } else {
-                        // Remove zoom from any other item
-                        document.querySelectorAll('.gallery-item.zoomed').forEach(zoomed => {
-                            zoomed.classList.remove('zoomed');
-                        });
-                        // Zoom the clicked item
-                        item.classList.add('zoomed');
+            // Gallery Click Zoom
+            let currentlyZoomed = null;
+
+            galleryGrid.addEventListener('click', (e) => {
+                const item = e.target.closest('.gallery-item');
+                if (!item) {
+                    if (currentlyZoomed) {
+                        currentlyZoomed.classList.remove('zoomed');
+                        currentlyZoomed = null;
                     }
-                });
-            });
-
-            // Close zoom if background is clicked
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.gallery-item')) {
-                    document.querySelectorAll('.gallery-item.zoomed').forEach(zoomed => {
-                        zoomed.classList.remove('zoomed');
-                    });
+                    return;
                 }
-            });
 
-
-
-
-            // Click outside to close zoomed image
-            document.addEventListener('click', () => {
-                if (currentlyZoomed) {
-                    currentlyZoomed.classList.remove('zoomed');
+                if (item.classList.contains('zoomed')) {
+                    item.classList.remove('zoomed');
                     currentlyZoomed = null;
+                } else {
+                    if (currentlyZoomed) {
+                        currentlyZoomed.classList.remove('zoomed');
+                    }
+                    item.classList.add('zoomed');
+                    currentlyZoomed = item;
                 }
             });
-
 
             const createHeartExplosion = (x, y) => {
-                const heartTypes = ['🎂', '🎊', '🥳', '🎈', '🎊', '❤️'];
+                const heartTypes = ['🎂', '🎊', '🥳', '🎈', '❤️', '💖', '✨'];
                 for (let i = 0; i < 5; i++) {
                     const heart = document.createElement('span');
                     heart.classList.add('heart-pop');
@@ -1011,45 +980,43 @@
                 }
             };
 
-            document.body.addEventListener('click', (e) => createHeartExplosion(e.clientX, e.clientY));
+            document.body.addEventListener('click', (e) => {
+                if (!e.target.closest('.scroll-down-btn')) {
+                    createHeartExplosion(e.clientX, e.clientY);
+                }
+            });
 
             // Ripple effect on buttons
-            navLinks.forEach(link => {
-                link.addEventListener('mouseenter', () => {
-                    const ripple = document.createElement('div');
-                    Object.assign(ripple.style, {
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: '0',
-                        height: '0',
-                        borderRadius: '50%',
-                        background: 'rgba(255, 255, 255, 0.3)',
-                        animation: 'ripple 0.6s linear'
-                    });
-                    link.appendChild(ripple);
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple-effect';
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    button.appendChild(ripple);
+
                     setTimeout(() => ripple.remove(), 600);
                 });
             });
 
             // Typewriter effect observer
-            const messageTextElement = document.querySelector('.message-text');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && entry.target.id === 'message') {
-                        // Reset and restart typewriter animation when message section is viewed
-                        messageTextElement.style.animation = 'none';
-                        setTimeout(() => {
-                            messageTextElement.style.animation = 'typewriter 4s steps(60) forwards';
-                        }, 10);
+                        messageTextElement.classList.add('typing');
+                    } else {
+                        messageTextElement.classList.remove('typing');
                     }
                 });
             }, {
                 threshold: 0.5
             });
 
-            observer.observe(document.getElementById('message'));
+            observer.observe(currentMessagePage);
 
             // --- Keyboard Navigation ---
             document.addEventListener('keydown', (e) => {
@@ -1071,10 +1038,9 @@
             // --- Initializations ---
             createParticles();
             createFloatingHearts();
+            updatePages(); // Call on load to set the initial state correctly
         });
     </script>
 </body>
-
-</html>
 
 </html>
