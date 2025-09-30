@@ -372,6 +372,9 @@
             height: 100%;
             position: relative;
             z-index: 1;
+            background: url("Img/my2.jpg") no-repeat center center;
+            background-size: 100%;
+            background-position-x: cover;
         }
         
         .page-section {
@@ -488,7 +491,7 @@
         
         #hero p {
             font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--font-color-light);
+            color: #000000;
             font-weight: 300;
             animation: fadeInDelay 1s forwards 1s;
             opacity: 0;
@@ -497,6 +500,8 @@
         #message h2,
         #gallery h2,
         #cake-page h2,
+        #special-note h2,
+        #timer-section h2,
         #ending h3 {
             font-family: var(--font-script);
             font-size: clamp(2.5rem, 6vw, 5rem);
@@ -508,16 +513,47 @@
             animation: textGlow 2s ease-in-out infinite alternate;
         }
         
+        .message-text-container {
+            min-height: 5rem;
+            /* reserve enough space for 2 lines */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
         .message-text {
             font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            color: var(--font-color-light);
+            color: black;
             font-style: italic;
-            line-height: 3.8;
-            border-right: 3px solid var(--accent-gold);
-            white-space: nowrap;
+            line-height: 2.2;
+            white-space: pre-wrap;
+            /* allows line breaks */
             overflow: hidden;
-            max-width: fit-content;
-            margin: 0 auto;
+            display: block;
+            /* block fixes inline-block shifting */
+            position: relative;
+        }
+        
+        .message-text::after {
+            /* content: '|'; */
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-weight: bold;
+            color: var(--accent-gold);
+            animation: blink 0.8s steps(1) infinite;
+        }
+        
+        @keyframes blink {
+            0%,
+            50%,
+            100% {
+                opacity: 1;
+            }
+            25%,
+            75% {
+                opacity: 0;
+            }
         }
         
         .message-text.typing {
@@ -529,8 +565,8 @@
         
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+            gap: 20px;
             width: 100%;
             perspective: 1500px;
             position: relative;
@@ -759,6 +795,13 @@
                 margin-top: 2rem;
             }
         }
+        
+        #clock,
+        #countdown-timer {
+            font-family: var(--font-script);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
     </style>
 </head>
 
@@ -767,10 +810,21 @@
     <div class="floating-hearts" id="floating-hearts"></div>
     <div class="fireworks-container" id="fireworks-container"></div>
 
+
+
     <div class="page-container">
+        <section id="timer-section" class="page-section active">
+            <div class="glass-card">
+                <h2>Get Ready! 🎉</h2>
+                <div id="clock" style="font-size:3rem; margin-bottom:1rem; color: var(--accent-cyan);">00:00:00</div>
+                <div id="countdown-timer" style="font-size:2rem; color: var(--accent-pink);">10</div>
+                <button class="scroll-down-btn" data-target="#hero">Start Celebration 🎊</button>
+            </div>
+        </section>
+
         <section id="hero" class="page-section active">
             <div class="glass-card">
-                <h1>Happy Birthday, Shivani! 🎉❤️</h1>
+                <h1>Happy Birthday, Ranuuu....! 🎉❤️</h1>
                 <p>A magical celebration for the most wonderful person in my world ✨</p>
             </div>
             <button class="scroll-down-btn" data-target="#message">Read Your Special Message 💌</button>
@@ -778,11 +832,17 @@
 
         <section id="message" class="page-section">
             <div class="glass-card">
-                <h2>My Dearest Love 💕</h2>
-                <p class="message-text">Every day with you is a celebration, but today is extra special! ✨</p>
+                <h2>Happy Birthday Motii....💕</h2>
+                <p style="font-size:1.2rem; margin-bottom:1.5rem; color:var(--accent-pink); font-family:var(--font-script);"></p>
+
+                <div class="message-text-container">
+                    <p id="message-text" class="message-text" data-text="Every day with you is a celebration, but today is extra special! ✨|May this year bring you endless laughter, new adventures, and dreams come true. ✨| Always keep smiling and let your heart sing with joy! ✨|"></p>
+                </div>
+
                 <button class="scroll-down-btn" data-target="#cake-page">Let's Celebrate You! 🎊</button>
             </div>
         </section>
+
 
         <section id="cake-page" class="page-section">
             <div class="glass-card">
@@ -800,26 +860,42 @@
 
         <section id="gallery" class="page-section">
             <div class="glass-card">
-                <h2>Our Precious Moments 💝</h2>
+                <h2>Magical Moments 💝</h2>
                 <div class="gallery-grid">
                     <div class="gallery-item" data-effect="flip"><img src="Img/4.jpg" alt="A beautiful memory of us smiling"></div>
                     <div class="gallery-item" data-effect="pulse"><img src="Img/14.jpg" alt="Another candid photo of a happy moment"></div>
-                    <div class="gallery-item" data-effect="sparkle"><img src="Img/1.jpg" alt="A sweet selfie together"></div>
-                    <div class="gallery-item" data-effect="flash"><img src="Img/13.jpg" alt="A photo from our trip"></div>
-                    <div class="gallery-item" data-effect="tilt"><img src="Img/12.jpg" alt="A fun moment captured on camera"></div>
+                    <div class="gallery-item" data-effect="sparkle"><img src="Img/12.jpg" alt="A sweet selfie together"></div>
+                    <div class="gallery-item" data-effect="flash"><img src="Img/18.jpg" alt="A photo from our trip"></div>
+                    <div class="gallery-item" data-effect="tilt"><img src="Img/1.jpg" alt="A fun moment captured on camera"></div>
                     <div class="gallery-item" data-effect="overlay"><img src="Img/7.jpg" alt="A romantic shot of us"></div>
                     <div class="gallery-item" data-effect="overlay"><img src="Img/3.jpg" alt="Us enjoying a special moment"></div>
-                    <div class="gallery-item" data-effect="overlay"><img src="Img/5.jpg" alt="Us enjoying a special moment"></div>
+                    <div class="gallery-item" data-effect="overlay"><img src="Img/19.jpg" alt="Us enjoying a special moment"></div>
+                    <div class="gallery-item" data-effect="overlay"><img src="Img/16.jpg" alt="Us enjoying a special moment"></div>
+                    <div class="gallery-item" data-effect="overlay"><img src="Img/20.jpg" alt="Us enjoying a special moment"></div>
                 </div>
-                <button class="scroll-down-btn" data-target="#ending">One Final Surprise 🎁</button>
+                <button class="scroll-down-btn" data-target="#special-note">A Special Note 💌</button>
             </div>
         </section>
 
+        <section id="special-note" class="page-section">
+            <div class="glass-card">
+                <h2>A Special Message for You... </h2>
+
+                <div class="message-text-container">
+                    <p id="special-text" class="message-text" data-text="25 साल की हो गई है, अब तो सुधर जा… शादी की उम्र भी आ गई है😜😜">
+                    </p>
+                </div>
+
+                <button class="scroll-down-btn" data-target="#ending">Continue the Celebration 🎉</button>
+            </div>
+        </section>
+
+
         <section id="ending" class="page-section">
             <div class="glass-card">
-                <h3>Forever Yours, [Your Name] 💕✨</h3>
+                <h3>Happy Birthday, Shivani❤️ </h3>
                 <p style="font-size: 1.3rem; margin-top: 1rem; font-style: italic; color: var(--accent-gold);">
-                    "You are my sunshine, my love, my everything. Happy Birthday, beautiful! 🌟"
+                    "You make me complete. Thank you for being with me and for coming into my life. The shine in your eyes when you look at me makes me love you even more. I love you… 💕✨🌟"
                 </p>
             </div>
         </section>
@@ -1003,20 +1079,42 @@
                 });
             });
 
-            // Typewriter effect observer
-            const observer = new IntersectionObserver((entries) => {
+            const messageEl = document.getElementById('message-text');
+            const fullText = messageEl.dataset.text.split('|'); // split by '|'
+            messageEl.innerHTML = '';
+
+            let lineIndex = 0;
+
+            function typeLine(line, index) {
+                let charIndex = 0;
+
+                function typeChar() {
+                    if (charIndex < line.length) {
+                        messageEl.innerHTML = messageEl.innerHTML.replace(/(\|)$/, ''); // remove cursor placeholder
+                        messageEl.innerHTML += line.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeChar, 50); // typing speed
+                    } else if (index < fullText.length - 1) {
+                        messageEl.innerHTML += '\n'; // new line
+                        setTimeout(() => typeLine(fullText[index + 1], index + 1), 400); // pause before next line
+                    }
+                }
+                typeChar();
+            }
+
+            // Start typing when section is visible
+            const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && entry.target.id === 'message') {
-                        messageTextElement.classList.add('typing');
-                    } else {
-                        messageTextElement.classList.remove('typing');
+                        typeLine(fullText[0], 0);
                     }
                 });
             }, {
                 threshold: 0.5
             });
 
-            observer.observe(currentMessagePage);
+            observer.observe(messageEl.closest('#message'));
+
 
             // --- Keyboard Navigation ---
             document.addEventListener('keydown', (e) => {
@@ -1034,6 +1132,75 @@
                     }
                 }
             });
+
+            const specialEl = document.getElementById('special-text');
+            const specialTextLines = specialEl.dataset.text.split('|');
+            specialEl.innerHTML = '';
+
+            function typeSpecialLine(line, index) {
+                let charIndex = 0;
+
+                function typeChar() {
+                    if (charIndex < line.length) {
+                        specialEl.innerHTML = specialEl.innerHTML.replace(/(\|)$/, '');
+                        specialEl.innerHTML += line.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeChar, 50);
+                    } else if (index < specialTextLines.length - 1) {
+                        specialEl.innerHTML += '\n';
+                        setTimeout(() => typeSpecialLine(specialTextLines[index + 1], index + 1), 400);
+                    }
+                }
+                typeChar();
+            }
+
+            // ----------------------
+            // Real-time Clock
+            // ----------------------
+            const clockEl = document.getElementById('clock');
+
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+            setInterval(updateClock, 1000);
+            updateClock(); // initial call
+
+            // ----------------------
+            // Reverse Countdown (10 seconds)
+            // ----------------------
+            const countdownEl2 = document.getElementById('countdown-timer');
+            let countdownTime = 10;
+
+            const countdownInterval2 = setInterval(() => {
+                countdownEl2.textContent = countdownTime;
+                countdownTime--;
+                if (countdownTime < 0) {
+                    clearInterval(countdownInterval2);
+                    // Automatically move to hero section after countdown
+                    const heroSection = document.querySelector('#hero');
+                    currentPageIndex = Array.from(pages).indexOf(heroSection);
+                    updatePages();
+                }
+            }, 1000);
+
+
+            // Start typing when section is visible
+            const observerSpecial = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.target.id === 'special-note') {
+                        typeSpecialLine(specialTextLines[0], 0);
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            observerSpecial.observe(specialEl.closest('#special-note'));
+
 
             // --- Initializations ---
             createParticles();
